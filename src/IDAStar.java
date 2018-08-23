@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class IDAStar {
-
+    // 8! ⋅ 3^7 = 88179840 | 8 cubes 3 different state for each cube
 	public static final int[] corners = readHeuristics(88179840, "corners.csv");
 	public static final int[] edgesSetOne = readHeuristics(42577920, "edgesSetOne.csv");
 	public static final int[] edgesSetTwo = readHeuristics(42577920, "edgesSetTwo.csv");

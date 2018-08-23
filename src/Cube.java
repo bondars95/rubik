@@ -9,12 +9,35 @@ import java.util.*;
  */
 public class Cube {
 
-	public char[] state;
+	char[] state;
 
 	/**
 	 * The serialized representation of our goal state.
+	 *
+	 *
+	 *     				  R0  R1  R2
+	 *     				  R3  R4  55
+	 *     				  R6  R7  R8
+	 *        G9  G10 G11 Y12  B15 B16 B17Y13 Y14
+	 *        G18 G19 G20 Y21 Y22 Y23 B24 B25 B26
+	 *	      G27 G28 G29 Y30 Y31 Y32 B33 B34 B35
+	 *                    O36 O37 O38
+	 *                    O39 O40 O41
+	 *                    O42 O43 O44
+	 *                    W45 W46 W47
+	 *                    W48 W49 W50
+	 *                    W51 W52 W53
+	 *
+	 * 					Face indexes (Snail)
+	 *
+	 * 				      	0  1  2
+	 * 				      	7  8  3
+	 * 				      	6  5  4
+	 *
+	 *
+	 *
 	 */
-	public final static String GOAL = "RRRRRRRRRGGGYYYBBBGGGYYYBBBGGGYYYBBBOOOOOOOOOWWWWWWWWW";
+	final static String GOAL = "RRRRRRRRRGGGYYYBBBGGGYYYBBBGGGYYYBBBOOOOOOOOOWWWWWWWWW";
 
 	/**
 	 * A two-dimensional primitive array of ints representing the location of the corners.
@@ -22,7 +45,7 @@ public class Cube {
 	 * Each row represents a physical corner cubie on the Rubik's cube.
 	 * Each column in the row represents a location in the serialized version of the cube.
 	 */
-	public final static int[][] CORNERS = {
+	private final static int[][] CORNERS = {
 			{0, 9, 51},
 			{2, 17, 53},
 			{6, 11, 12},
@@ -59,14 +82,14 @@ public class Cube {
 	 * color of the face and the int[] is the indices of the string in
 	 * which the face represents.
 	 */
-	public final static HashMap<Character, int[]> FACES = initFaces();
+	final static HashMap<Character, int[]> FACES = initFaces();
 
 	/**
 	 * A HashMap<Character, int[]>, where the key is the character of the
 	 * color of the face and the int[] is the indices of the string in
 	 * which the side represents.
 	 */
-	public final static HashMap<Character, int[]> SIDES = initSides();
+	private final static HashMap<Character, int[]> SIDES = initSides();
 
 	/**
 	 * A Map<String, Integer> where the key is the sorted state
@@ -80,14 +103,14 @@ public class Cube {
 	 * the center of each side and the value is the index position of
 	 * that colored center.
 	 */
-	public final static HashMap<Character, Integer> CENTERS = initCenters();
+	private final static HashMap<Character, Integer> CENTERS = initCenters();
 
 	/**
 	 * A HashMap<String, Integer> where the key is the sorted state
 	 * of the edges and the value is the edge in a goal state.
 	 * Used for quicker lookup times while encoding the edges.
 	 */
-	public final static HashMap<String, Integer> GOALEDGES = initGoalEdges();
+	private final static HashMap<String, Integer> GOALEDGES = initGoalEdges();
 
 	/**
 	 * Initializes the state to an empty String.
@@ -115,7 +138,7 @@ public class Cube {
 	}
 
 	private static HashMap<Character, int[]> initFaces() {
-		HashMap<Character, int[]> faces = new HashMap<Character, int[]>();
+		HashMap<Character, int[]> faces = new HashMap<>();
 		int[] face = new int[8];
 		face[0] = 0;
 		face[1] = 1;
@@ -125,7 +148,7 @@ public class Cube {
 		face[5] = 7;
 		face[6] = 6;
 		face[7] = 3;
-		faces.put("R".charAt(0), face);
+		faces.put('R', face);
 		face = new int[8];
 		face[0] = 9;
 		face[1] = 10;
@@ -135,7 +158,7 @@ public class Cube {
 		face[5] = 28;
 		face[6] = 27;
 		face[7] = 18;
-		faces.put("G".charAt(0), face);
+		faces.put('G', face);
 		face = new int[8];
 		face[0] = 12;
 		face[1] = 13;
@@ -145,7 +168,7 @@ public class Cube {
 		face[5] = 31;
 		face[6] = 30;
 		face[7] = 21;
-		faces.put("Y".charAt(0), face);
+		faces.put('Y', face);
 		face = new int[8];
 		face[0] = 15;
 		face[1] = 16;
@@ -155,7 +178,7 @@ public class Cube {
 		face[5] = 34;
 		face[6] = 33;
 		face[7] = 24;
-		faces.put("B".charAt(0), face);
+		faces.put('B', face);
 		face = new int[8];
 		face[0] = 36;
 		face[1] = 37;
@@ -165,7 +188,7 @@ public class Cube {
 		face[5] = 43;
 		face[6] = 42;
 		face[7] = 39;
-		faces.put("O".charAt(0), face);
+		faces.put('O', face);
 		face = new int[8];
 		face[0] = 45;
 		face[1] = 46;
@@ -175,12 +198,12 @@ public class Cube {
 		face[5] = 52;
 		face[6] = 51;
 		face[7] = 48;
-		faces.put("W".charAt(0), face);
+		faces.put('W', face);
 		return faces;
 	}
 
 	private static HashMap<Character, int[]> initSides() {
-		HashMap<Character, int[]> sides = new HashMap<Character, int[]>();
+		HashMap<Character, int[]> sides = new HashMap<>();
 		int[] side = new int[12];
 		side[0] = 51;
 		side[1] = 52;
@@ -194,7 +217,7 @@ public class Cube {
 		side[9] = 11;
 		side[10] = 10;
 		side[11] = 9;
-		sides.put("R".charAt(0), side);
+		sides.put('R', side);
 		side = new int[12];
 		side[0] = 0;
 		side[1] = 3;
@@ -208,7 +231,7 @@ public class Cube {
 		side[9] = 45;
 		side[10] = 48;
 		side[11] = 51;
-		sides.put("G".charAt(0), side);
+		sides.put('G', side);
 		side = new int[12];
 		side[0] = 6;
 		side[1] = 7;
@@ -222,7 +245,7 @@ public class Cube {
 		side[9] = 29;
 		side[10] = 20;
 		side[11] = 11;
-		sides.put("Y".charAt(0), side);
+		sides.put('Y', side);
 		side = new int[12];
 		side[0] = 8;
 		side[1] = 5;
@@ -236,7 +259,7 @@ public class Cube {
 		side[9] = 32;
 		side[10] = 23;
 		side[11] = 14;
-		sides.put("B".charAt(0), side);
+		sides.put('B', side);
 		side = new int[12];
 		side[0] = 30;
 		side[1] = 31;
@@ -250,7 +273,7 @@ public class Cube {
 		side[9] = 27;
 		side[10] = 28;
 		side[11] = 29;
-		sides.put("O".charAt(0), side);
+		sides.put('O', side);
 		side = new int[12];
 		side[0] = 42;
 		side[1] = 43;
@@ -264,7 +287,7 @@ public class Cube {
 		side[9] = 9;
 		side[10] = 18;
 		side[11] = 27;
-		sides.put("W".charAt(0), side);
+		sides.put('W', side);
 		return sides;
 	}
 
@@ -283,12 +306,12 @@ public class Cube {
 
 	private static HashMap<Character, Integer> initCenters() {
 		HashMap<Character, Integer> centers = new HashMap<Character, Integer>();
-		centers.put("R".charAt(0), 4);
-		centers.put("G".charAt(0), 19);
-		centers.put("Y".charAt(0), 22);
-		centers.put("B".charAt(0), 25);
-		centers.put("O".charAt(0), 40);
-		centers.put("W".charAt(0), 49);
+		centers.put('R', 4);
+		centers.put('G', 19);
+		centers.put('Y', 22);
+		centers.put('B', 25);
+		centers.put('O', 40);
+		centers.put('W', 49);
 		return centers;
 	}
 
