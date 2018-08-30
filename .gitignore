@@ -17,7 +17,7 @@
 
 /bin
 /out
-
+/target
 # Temporarily don't include csv's while 
 # we work out the heuristics
 *.csv
