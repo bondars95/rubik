@@ -15,7 +15,13 @@ public class Cube {
 	/**
 	 * The serialized representation of our goal state.
 	 *
-	 *
+	 *                        R - Front
+     *                        G - Right
+     *                        B - Left
+     *                        Y - Up
+     *                        W - Down
+     *                        O - Bottom
+     *
 	 *     				  R0  R1  R2
 	 *     				  R3  R4  55
 	 *     				  R6  R7  R8
@@ -79,11 +85,10 @@ public class Cube {
     };
 
     /**
-     * A HashMap<Character, int[]> where the key is the character of the
-     * color of the face and the int[] is the indices of the string in
-     * which the face represents.
+     * A HashMap<Character, Character> where the key is the character of the
+     * of the face and value its it color.
      */
-    final static HashMap<Character, Character> NOTATION_TO_FACES = new HashMap<Character, Character>() {{
+    public final static HashMap<Character, Character> NOTATION_TO_FACES = new HashMap<Character, Character>() {{
         put('F', 'R');
         put('L', 'B');
         put('R', 'G');
@@ -308,6 +313,7 @@ public class Cube {
         return sides;
     }
 
+    // todo static var
     private static HashMap<String, Integer> initGoalCorners() {
         HashMap<String, Integer> result = new HashMap<String, Integer>();
         result.put("GRW", 0);
@@ -545,7 +551,7 @@ public class Cube {
      * which corners are which.
      */
     private static HashMap<Integer, Integer> mapCorners(char[] state) {
-        HashMap<Integer, Integer> result = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> result = new HashMap<>();
         int[][] corners = Cube.CORNERS;
         HashMap<String, Integer> goalCorners = initGoalCorners();
         for (int j = 0; j < corners.length; j++) {
@@ -615,7 +621,7 @@ public class Cube {
         for (int i = 0; i < 100; i++) {
             Random r = new Random();
             // Pick a random face to rotate
-            ArrayList<Character> keys = new ArrayList<Character>(Cube.FACES.keySet());
+            ArrayList<Character> keys = new ArrayList<>(Cube.FACES.keySet());
             // Perform the rotation
             cube.state = Cube.rotate(cube.state, keys.get(r.nextInt(keys.size())), 1);
         }
@@ -629,27 +635,27 @@ public class Cube {
      */
     @Override
     public String toString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < this.state.length; i++) {
             if (i < 9 || i > 35) {
                 if (i % 3 == 0) {
-                    result += "   " + this.state[i];
+                    result.append("   ").append(this.state[i]);
                 } else if (i % 3 == 2) {
-                    result += this.state[i] + "\n";
+                    result.append(this.state[i]).append("\n");
                 } else {
-                    result += this.state[i];
+                    result.append(this.state[i]);
                 }
             } else {
                 if (i % 9 == 8) {
-                    result += this.state[i] + "\n";
+                    result.append(this.state[i]).append("\n");
                 } else {
-                    result += this.state[i];
+                    result.append(this.state[i]);
                 }
             }
         }
 
-        return result;
+        return result.toString();
     }
 
     public static void main(String[] args) {
@@ -667,12 +673,13 @@ public class Cube {
         );
         Boolean validCube = Cube.verifyCube(cube.state);
         if (validCube) {
+            new SearchAlgorithm(cube.state).search();
             boolean verbose = false;
             if (args.length > 1) {
                 verbose = Boolean.parseBoolean(args[1]);
             }
-            String result = IDAStar.performIDAStar(cube.state, verbose);
-            System.out.println(result);
+//            String result = IDAStar.performIDAStar(cube.state, true);
+//            System.out.println(result);
         } else {
             System.out.println("This cube is not valid");
         }

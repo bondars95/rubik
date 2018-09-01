@@ -105,11 +105,6 @@ public class CubeNode implements Comparable<CubeNode> {
 
 	@Override
 	public int compareTo(CubeNode b) {
-		if (this.heuristic < b.heuristic) {
-			return -1;
-		} else if (this.heuristic > b.heuristic) {
-			return 1;
-		}
-		return 0;
+		return Integer.compare(this.heuristic, b.heuristic);
 	}
 }

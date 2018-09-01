@@ -9,17 +9,17 @@ public class IDAStar {
 	 * All attainable corner states of a rubik's cube.
 	 * There are 8! * 3^7 = 88,179,840 possible combination.
 	 */
-	public static final int[] corners = readHeuristics(88179840, "corners.csv");
+	public static final int[] corners = readHeuristics(88179840, "bin/corners.csv");
 	/*
 	 * Half of all attainable edge states of a  rubik's cube.
 	 * There are 12!/6! * 2^6 = 42,577,920 possible combinations.
 	 */
-	public static final int[] edgesSetOne = readHeuristics(42577920, "edgesSetOne.csv");
+	public static final int[] edgesSetOne = readHeuristics(42577920, "bin/edgesSetOne.csv");
 	/*
 	 * Second half of all attainable edge states of a  rubik's cube.
 	 * There are 12!/6! * 2^6 = 42,577,920 possible combinations.
 	 */
-	public static final int[] edgesSetTwo = readHeuristics(42577920, "edgesSetTwo.csv");
+	public static final int[] edgesSetTwo = readHeuristics(42577920, "bin/edgesSetTwo.csv");
 	public static int nextBound;
 	public static int nodesVisited;
 	public static PriorityQueue<CubeNode> frontier = new PriorityQueue<CubeNode>();

@@ -1,54 +1,54 @@
 import java.util.*;
 
+
 public class CornerHeuristics {
 	/**
 	 * As per Korf's paper, we should generate all of the permutations
 	 * by starting with a solved cube and then performing a breadth-
-	 * first search.
+	 * first search. Heuristic value is a path size from goal state to current/
 	 */
-	public static void generateCornerHeuristics() {
+	private static void generateCornerHeuristics() {
 		// Make a cube and initialize it with a solved cube state
 		Cube cube = new Cube(Cube.GOAL.toCharArray());
 
 		// Make a new Queue to perform BFS
-		Queue<CubeNode> q = new LinkedList<CubeNode>();
+		Queue<CubeNode> q = new LinkedList<>();
 
 		// Put the solved/initial state of the corners on the queue
 		q.add(new CubeNode(cube.state, 0));
+		// total number of possible combinations
 		int[] corners = new int[88179840];
-		Set<Map.Entry<Character, int[]>> faces = Cube.FACES.entrySet();
+		Set<Character> faces = Cube.FACES.keySet();
 
-		// Iterate until we can't anymore
+		// Iterate until not empty
 		while (!q.isEmpty()) {
 			CubeNode current = q.poll();
-			// For each cube state we're given, we need to try all of
-			// possible turns of each other other faces
-			for (Map.Entry<Character, int[]> face : faces) {
+			// Perform all possible movements for current node
+			for (Character face : faces) {
 				// Do a clockwise turn
-				char[] newState = Cube.rotate(current.state, face.getKey(), 1);
+				char[] newState = Cube.rotate(current.state, face, 1);
+				// calculate state ID
 				int encodedCorner = Integer.parseInt(Cube.encodeCorners(newState));
 				// Check to see if this combination has been made before
 				if (corners[encodedCorner] == 0) {
-					// This is a new combination, let's add it to the queue
+                    // This is a new combination, let's add it to the queue
 					q.add(new CubeNode(newState, current.heuristic + 1));
 				}
 			}
 
-			// Handle the current node. We'll encode the corners, and check to
-			// see if we've seen this permutation before.
+			// Calculate state id, check if was made before
 			String encodedCorner = Cube.encodeCorners(current.state);
 			int encodedCornerInt = Integer.parseInt(encodedCorner);
 			if (corners[encodedCornerInt] == 0) {
 				corners[encodedCornerInt] = current.heuristic;
-				// Print this out
+				// Print this out to stdin
 				System.out.println(encodedCorner + "," + current.heuristic);
 			}
 		}
-	}
+    }
 
 	/**
-	 * A main function to kick off the heuristic table generation
-	 * @param args
+	 * A main function to start heuristic table generation
 	 */
 	public static void main(String[] args) {
 		CornerHeuristics.generateCornerHeuristics();

@@ -20,7 +20,7 @@ public enum Rotation {
     DOUBLE_UP,
     DOUBLE_DOWN;
 
-    private static final HashMap<String, Rotation> mapping = new HashMap<String, Rotation>() {{
+    public static final HashMap<String, Rotation> mapping = new HashMap<String, Rotation>() {{
         put("F", FRONT);
         put("B", BACK);
         put("R", RIGHT);
@@ -39,6 +39,27 @@ public enum Rotation {
         put("L`", REVERSE_LEFT);
         put("U`", REVERSE_UP);
         put("D`", REVERSE_DOWN);
+    }};
+
+    private static final HashMap<Rotation, String> mapping2 = new HashMap<Rotation, String>() {{
+        put(FRONT, "F");
+        put(BACK, "B");
+        put(RIGHT, "R");
+        put(LEFT, "L");
+        put(UP, "U");
+        put(DOWN, "D");
+        put(DOUBLE_FRONT, "F2");
+        put(DOUBLE_BACK, "B2");
+        put(DOUBLE_RIGHT, "R2");
+        put(DOUBLE_LEFT, "L2");
+        put(DOUBLE_UP, "U2");
+        put(DOUBLE_DOWN, "D2");
+        put(REVERSE_FRONT, "F`");
+        put(REVERSE_BACK, "B`");
+        put(REVERSE_RIGHT, "R`");
+        put(REVERSE_LEFT, "L`");
+        put(REVERSE_UP, "U`");
+        put(REVERSE_DOWN, "D`");
     }};
 
     public static Rotation fromValue(String notation) {
@@ -74,6 +95,6 @@ public enum Rotation {
     }
 
     public char getNotation() {
-        return this.toString().charAt(0);
+        return mapping2.get(this).charAt(0);
     }
 }
